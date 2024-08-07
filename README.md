@@ -1,3 +1,3 @@
 # Blackjack game 
 
-Made for studying purposes only. 
+Made for study purposes only. 
