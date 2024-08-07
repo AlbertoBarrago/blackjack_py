@@ -43,16 +43,6 @@ def ask_if_restart():
         exit()
 
 
-BLACKJACK_LIMIT = 21
-desk = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-print(logo)
-choose = input("Do you want to play a game of Blackjack 🂧 ? Type 'y' or 'n': ")
-another_game = True
-
-player_bot_cards = []
-player_cards = []
-
-
 def ask_for_restart():
     global player_score, player_bot_score, player_cards, player_bot_cards
     player_bot_score = 0
@@ -67,41 +57,56 @@ def handle_aces(cards):
         cards.append(1)
 
 
-while another_game:
+def compute_score():
+    if player_bot_score == BLACKJACK_LIMIT:
+        print(f"You went over {BLACKJACK_LIMIT} 😭, "
+              f"\n or because the computer's score is {player_bot_score} has made blackjack 🤖")
+        ask_if_restart()
+    elif player_score == BLACKJACK_LIMIT or player_bot_score > BLACKJACK_LIMIT:
+        print(f"You win !!! 🚀, your score is {player_score}")
+        ask_if_restart()
+    elif player_score > BLACKJACK_LIMIT:
+        print('Game Over 😔, out of range')
+        ask_if_restart()
+
+
+def assign_card():
+    global player_score, player_bot_cards, player_bot_score
+    another_card = input("Do you want to draw another card? Type 'y' or 'n': ")
+    if another_card == 'y':
+        player_cards.append(desk[random.randint(0, 12)])
+        player_score = getTotal(player_cards)
+        player_bot_cards = assignRandomValueToBot(player_bot_cards)
+        player_bot_score = getTotal(player_bot_cards)
+    elif another_card == 'n':
+        player_bot_cards = assignRandomValueToBot(player_bot_cards)
+        player_bot_score = getTotal(player_bot_cards)
+
+    handle_aces(player_cards)
+    handle_aces(player_bot_cards)
+
+
+BLACKJACK_LIMIT = 21
+desk = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+print(logo)
+choose = input("Do you want to play a game of Blackjack 🂧 ? Type 'y' or 'n': ")
+# vars
+is_game_over = True
+player_bot_cards = []
+player_cards = []
+
+while is_game_over:
     if choose == 'y':
         assignCard()
         player_score = getTotal(player_cards)
         player_bot_score = getTotal(player_bot_cards)
 
-        print(f"Your card: {player_cards}, Your Score: {player_score}")
-        print(f"Computer's card: {player_bot_cards}, Computer Score: {player_bot_score}")
+        print(f"Your card: {player_cards}, actual Score: {player_score}")
+        print(f"Computer's card: {player_bot_cards}, computer Score: {player_bot_score}")
 
-        another_card = input("Do you want to draw another card? Type 'y' or 'n': ")
-        if another_card == 'y':
-            player_cards.append(desk[random.randint(0, 12)])
-            player_score = getTotal(player_cards)
-
-            player_bot_cards = assignRandomValueToBot(player_bot_cards)
-            player_bot_score = getTotal(player_bot_cards)
-        elif another_card == 'n':
-            player_bot_cards = assignRandomValueToBot(player_bot_cards)
-            player_bot_score = getTotal(player_bot_cards)
-
-        handle_aces(player_cards)
-        handle_aces(player_bot_cards)
-
-        if player_bot_score == BLACKJACK_LIMIT:
-            print(f"You went over {BLACKJACK_LIMIT} 😭, "
-                  f"\n or because the computer's score is {player_bot_score} has made blackjack 🤖")
-            ask_if_restart()
-        elif player_score == BLACKJACK_LIMIT or player_bot_score > BLACKJACK_LIMIT:
-            print(f"You win !!! 🚀")
-            ask_if_restart()
-        elif player_score > BLACKJACK_LIMIT:
-            print('Game Over 😔, out of range')
-            ask_if_restart()
-
+        assign_card()
+        compute_score()
     else:
-        another_game = False
+        is_game_over = False
         print("You have chosen not to play a game of Blackjack")
         exit()
