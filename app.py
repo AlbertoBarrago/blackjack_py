@@ -1,8 +1,11 @@
-# Blackjack game in py
 import os
 import random
 
 from logo import logo
+
+
+def clear():
+    os.system('clear')
 
 
 def getTotal(cards):
@@ -21,10 +24,6 @@ def assignCard():
         player_cards.append(desk[random.randint(0, 12)])
 
 
-def clear():
-    os.system('clear')
-
-
 def assignRandomValueToBot(old_value):
     random_choice = random.random()
     new_value = old_value
@@ -34,19 +33,14 @@ def assignRandomValueToBot(old_value):
     return new_value
 
 
-def restart_game(p_bot_cards, p_cards, p_score, p_bot_score):
-    p_bot_cards = []
-    p_cards = []
-    p_score = 0
-    p_bot_score = 0
-    clear()
-    print('Game restarted... 🔄')
-    return {
-        'p_bot_cards': p_bot_cards,
-        'p_cards': p_cards,
-        'p_score': p_score,
-        'p_bot_score': p_bot_score,
-    }
+def ask_if_restart():
+    play_again = input("👾 Do you want to play again? Type 'y' or 'n': ")
+    if play_again == 'y':
+        clear()
+        ask_for_restart()
+    else:
+        print("see you soon! 👋🏻")
+        exit()
 
 
 BLACKJACK_LIMIT = 21
@@ -91,24 +85,13 @@ while another_game:
             player_bot_score = getTotal(player_bot_cards)
 
         if player_score > BLACKJACK_LIMIT or player_bot_score == BLACKJACK_LIMIT:
-            print(f"You have busted from because your score is {player_score} > {BLACKJACK_LIMIT} 😭, "
-                  f"or because the computer's score is {player_bot_score} has made blackjack 🤖")
-            play_again = input("Do you want to play again? Type 'y' or 'n': ")
-            if play_again == 'y':
-                clear()
-                ask_for_restart()
-            else:
-                print("You have chosen not to play a game of Blackjack")
-                exit()
+            print(f"You went over {BLACKJACK_LIMIT} 😭, " 
+                  f"\n or because the computer's score is {player_bot_score} has made blackjack 🤖")
+            ask_if_restart()
         elif player_score == BLACKJACK_LIMIT or player_bot_score > BLACKJACK_LIMIT:
-            print(f"You win because {player_score} vs {player_bot_score} or have you made blackjack! 🚀")
-            play_again = input("Do you want to play again? Type 'y' or 'n': ")
-            if play_again == 'y':
-                clear()
-                ask_for_restart()
-            else:
-                print("You have chosen not to play a game of Blackjack")
-                exit()
+            print(f"You win !!! 🚀")
+            ask_if_restart()
+
     else:
         another_game = False
         print("You have chosen not to play a game of Blackjack")
