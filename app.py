@@ -63,7 +63,8 @@ def compute_score():
               f"\n or because the computer's score is {player_bot_score} has made blackjack 🤖")
         ask_if_restart()
     elif player_score == BLACKJACK_LIMIT or player_bot_score > BLACKJACK_LIMIT:
-        print(f"You win !!! 🚀, your score is {player_score}")
+        print(f"You win !!! 🚀")
+        print(f"Your score is {player_score} and computer has {player_bot_score}")
         ask_if_restart()
     elif player_score > BLACKJACK_LIMIT:
         print('Game Over 😔, out of range')
@@ -76,11 +77,9 @@ def assign_card():
     if another_card == 'y':
         player_cards.append(desk[random.randint(0, 12)])
         player_score = getTotal(player_cards)
-        player_bot_cards = assignRandomValueToBot(player_bot_cards)
-        player_bot_score = getTotal(player_bot_cards)
-    elif another_card == 'n':
-        player_bot_cards = assignRandomValueToBot(player_bot_cards)
-        player_bot_score = getTotal(player_bot_cards)
+
+    player_bot_cards = assignRandomValueToBot(player_bot_cards)
+    player_bot_score = getTotal(player_bot_cards)
 
     handle_aces(player_cards)
     handle_aces(player_bot_cards)
