@@ -61,14 +61,13 @@ def compute_score():
     if player_bot_score == BLACKJACK_LIMIT:
         print(f"You went over {BLACKJACK_LIMIT} 😭, "
               f"\n or because the computer's score is {player_bot_score} has made blackjack 🤖")
-        ask_if_restart()
     elif player_score == BLACKJACK_LIMIT or player_bot_score > BLACKJACK_LIMIT:
         print(f"You win !!! 🚀")
         print(f"Your score is {player_score} and computer has {player_bot_score}")
-        ask_if_restart()
     elif player_score > BLACKJACK_LIMIT:
         print('Game Over 😔, out of range')
-        ask_if_restart()
+
+    ask_if_restart()
 
 
 def assign_card():
