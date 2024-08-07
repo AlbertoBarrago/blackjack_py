@@ -20,8 +20,8 @@ def assignCard():
         clear()
         player_bot_cards.append(desk[random.randint(0, 12)])
     if not player_cards:
-        player_cards.append(desk[random.randint(0, 12)])
-        player_cards.append(desk[random.randint(0, 12)])
+        for _ in range(2):
+            player_cards.append(desk[random.randint(0, 12)])
 
 
 def assignRandomValueToBot(old_value):
@@ -54,14 +54,17 @@ player_cards = []
 
 
 def ask_for_restart():
-    global player_score
-    global player_bot_score
-    global player_cards
-    global player_bot_cards
+    global player_score, player_bot_score, player_cards, player_bot_cards
     player_bot_score = 0
     player_score = 0
     player_cards = []
     player_bot_cards = []
+
+
+def handle_aces(cards):
+    while 11 in cards and sum(cards) > BLACKJACK_LIMIT:
+        cards.remove(11)
+        cards.append(1)
 
 
 while another_game:
@@ -84,12 +87,18 @@ while another_game:
             player_bot_cards = assignRandomValueToBot(player_bot_cards)
             player_bot_score = getTotal(player_bot_cards)
 
-        if player_score > BLACKJACK_LIMIT or player_bot_score == BLACKJACK_LIMIT:
-            print(f"You went over {BLACKJACK_LIMIT} 😭, " 
+        handle_aces(player_cards)
+        handle_aces(player_bot_cards)
+
+        if player_bot_score == BLACKJACK_LIMIT:
+            print(f"You went over {BLACKJACK_LIMIT} 😭, "
                   f"\n or because the computer's score is {player_bot_score} has made blackjack 🤖")
             ask_if_restart()
         elif player_score == BLACKJACK_LIMIT or player_bot_score > BLACKJACK_LIMIT:
             print(f"You win !!! 🚀")
+            ask_if_restart()
+        elif player_score > BLACKJACK_LIMIT:
+            print('Game Over 😔, out of range')
             ask_if_restart()
 
     else:
